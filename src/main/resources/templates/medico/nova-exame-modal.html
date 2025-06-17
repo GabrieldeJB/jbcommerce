@@ -1,0 +1,130 @@
+<div th:fragment="modalContent">
+<div id="novaExameModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>Novo Exame</h2>
+        <form id="novaExameForm" th:action="@{/medico/exames/salvar}" method="post">
+            <input type="hidden" id="exameId" name="id" value="">
+            <div class="form-group">
+                <label for="pacienteIdosoExame">Selecionar Paciente *</label>
+                <select id="pacienteIdosoExame" name="pacienteIdosoId" required>
+                    <option value="">Buscar por nome, CPF ou telefone...</option>
+                    <!-- Opções de idosos serão carregadas via JavaScript -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="tipoDeExame">Tipo de Exame *</label>
+                <select id="tipoDeExame" name="tipoDeExame" required>
+                    <option value="">Selecione...</option>
+                    <option value="Exame de Sangue">Exame de Sangue</option>
+                    <option value="Raio-X">Raio-X</option>
+                    <option value="Ultrassom">Ultrassom</option>
+                    <option value="Tomografia">Tomografia</option>
+                    <option value="Ressonância">Ressonância</option>
+                    <option value="Eletrocardiograma">Eletrocardiograma</option>
+                    <option value="Ecocardiograma">Ecocardiograma</option>
+                    <option value="Endoscopia">Endoscopia</option>
+                    <option value="Colonoscopia">Colonoscopia</option>
+                    <option value="Mamografia">Mamografia</option>
+                    <option value="Densitometria Óssea">Densitometria Óssea</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="tituloExame">Título do Exame</label>
+                <input type="text" id="tituloExame" name="titulo" placeholder="Ex: Hemograma completo">
+            </div>
+
+            <div class="form-group">
+                <label for="preparacaoNecessaria">Preparação Necessária</label>
+                <textarea id="preparacaoNecessaria" name="preparacaoNecessaria" placeholder="Digite cada instrução em uma linha separada Ex: Jejum de 12 horas Não tomar medicamentos pela manhã"></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="dataExame">Data *</label>
+                    <input type="date" id="dataExame" name="data" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="horaExame">Hora *</label>
+                    <input type="time" id="horaExame" name="hora" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="duracaoExame">Duração (minutos) *</label>
+                <input type="number" id="duracaoExame" name="duracao" min="1" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="localExame">Local</label>
+                    <input type="text" id="localExame" name="local" placeholder="Ex: Laboratório Sabin">
+                </div>
+
+                <div class="form-group">
+                    <label for="contatoExame">Contato</label>
+                    <input type="text" id="contatoExame" name="contato" placeholder="Ex: (11) 98765-4321">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="convenioExame">Convênio</label>
+                    <input type="text" id="convenioExame" name="convenio" placeholder="Ex: Bradesco Saúde">
+                </div>
+
+                <div class="form-group">
+                    <label for="numeroGuiaExame">Número da Guia</label>
+                    <input type="text" id="numeroGuiaExame" name="numeroGuia" placeholder="Opcional">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Nível de Urgência *</label>
+                <div class="radio-group">
+                    <input type="radio" id="urgenciaBaixaExame" name="nivelUrgencia" value="Baixa" checked>
+                    <label for="urgenciaBaixaExame">Baixa</label>
+                    <input type="radio" id="urgenciaMediaExame" name="nivelUrgencia" value="Média">
+                    <label for="urgenciaMediaExame">Média</label>
+                    <input type="radio" id="urgenciaAltaExame" name="nivelUrgencia" value="Alta">
+                    <label for="urgenciaAltaExame">Alta</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="sintomasExame">Sintomas Relatados</label>
+                <textarea id="sintomasExame" name="sintomas" placeholder="Ex: Cansaço, dor de cabeça"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="informacoesPacienteExame">Informações Adicionais para o Paciente</label>
+                <textarea id="informacoesPacienteExame" name="informacoesPaciente" placeholder="Ex: Chegar com 30 minutos de antecedência"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="observacoesExame">Observações (internas do médico)</label>
+                <textarea id="observacoesExame" name="observacoes" placeholder="Anote detalhes importantes sobre o exame"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="notificarPacienteExame" name="notificarPaciente" value="true" checked>
+                    Notificar paciente sobre este exame
+                </label>
+            </div>
+
+            <div class="form-group" id="lembreteHorasGroupExame">
+                <label for="lembreteHorasExame">Lembrar paciente (horas antes)</label>
+                <input type="number" id="lembreteHorasExame" name="lembreteHoras" min="0" value="24">
+            </div>
+
+            <button type="submit" class="btn-primario btn-agendar-exame">Agendar Exame</button>
+            <button type="submit" class="btn-primario btn-atualizar-exame" style="display:none;">Atualizar Exame</button>
+            <button type="button" class="btn-secundario btn-cancelar-exame">Cancelar</button>
+        </form>
+    </div>
+</div>
+</div> 

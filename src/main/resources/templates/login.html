@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - MedDoc</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="login-page">
+<div class="form-container">
+    <div class="form-box">
+        <div class="logo"></div>
+        <h2>MedDoc</h2>
+        <p class="subtitle">Gerenciamento de consultas e medicamentos</p>
+
+        <form th:action="@{/login}" method="post">
+            <input type="text" name="username" placeholder="Email ou CPF" required>
+            <input type="password" name="password" placeholder="Senha" required>
+
+            <div class="form-options">
+                <label><input type="checkbox" name="remember"> Lembrar-me</label>
+                <a th:href="@{/recuperar-senha}">Esqueceu a senha?</a>
+            </div>
+
+            <button type="submit">Entrar</button>
+        </form>
+
+        <p class="switch-form">Não tem uma conta? <a th:href="@{/cadastro}">Cadastre-se</a></p>
+    </div>
+</div>
+</body>
+</html>

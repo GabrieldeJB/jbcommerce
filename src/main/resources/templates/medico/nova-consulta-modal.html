@@ -1,0 +1,120 @@
+<div th:fragment="modalContent">
+<div id="novaConsultaModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>Nova Consulta</h2>
+        <form id="novaConsultaForm" th:action="@{/medico/consultas/salvar}" method="post">
+            <input type="hidden" id="consultaId" name="id" value="">
+            <input type="hidden" id="enviadoPor" name="enviadoPor" value="">
+            <div class="form-group">
+                <label for="pacienteIdoso">Selecionar Paciente *</label>
+                <select id="pacienteIdoso" name="pacienteIdosoId" required>
+                    <option value="">Buscar por nome, CPF ou telefone...</option>
+                    <!-- Opções de idosos serão carregadas via JavaScript -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="especialidade">Especialidade *</label>
+                <select id="especialidade" name="especialidade" required>
+                    <option value="">Selecione...</option>
+                    <option value="Cardiologia">Cardiologia</option>
+                    <option value="Dermatologia">Dermatologia</option>
+                    <option value="Endocrinologia">Endocrinologia</option>
+                    <option value="Gastroenterologia">Gastroenterologia</option>
+                    <option value="Geriatria">Geriatria</option>
+                    <option value="Oftalmologia">Oftalmologia</option>
+                    <option value="Ortopedia">Ortopedia</option>
+                    <option value="Otorrinolaringologia">Otorrinolaringologia</option>
+                    <option value="Psiquiatria">Psiquiatria</option>
+                    <option value="Urologia">Urologia</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="data">Data *</label>
+                    <input type="date" id="data" name="data" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="hora">Hora *</label>
+                    <input type="time" id="hora" name="hora" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="duracao">Duração (minutos) *</label>
+                <input type="number" id="duracao" name="duracao" min="1" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="local">Local</label>
+                    <input type="text" id="local" name="local" placeholder="Ex: Hospital Santa Casa">
+                </div>
+
+                <div class="form-group">
+                    <label for="contato">Contato</label>
+                    <input type="text" id="contato" name="contato" placeholder="Ex: (11) 98765-4321">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="convenio">Convênio</label>
+                    <input type="text" id="convenio" name="convenio" placeholder="Ex: SulAmérica">
+                </div>
+
+                <div class="form-group">
+                    <label for="numeroGuia">Número da Guia</label>
+                    <input type="text" id="numeroGuia" name="numeroGuia" placeholder="Opcional">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Nível de Urgência *</label>
+                <div class="radio-group">
+                    <input type="radio" id="urgenciaBaixa" name="nivelUrgencia" value="Baixa" checked>
+                    <label for="urgenciaBaixa">Baixa</label>
+                    <input type="radio" id="urgenciaMedia" name="nivelUrgencia" value="Média">
+                    <label for="urgenciaMedia">Média</label>
+                    <input type="radio" id="urgenciaAlta" name="nivelUrgencia" value="Alta">
+                    <label for="urgenciaAlta">Alta</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="sintomas">Sintomas Relatados</label>
+                <textarea id="sintomas" name="sintomas" placeholder="Ex: Dor de cabeça, febre"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="informacoesPaciente">Informações Adicionais para o Paciente</label>
+                <textarea id="informacoesPaciente" name="informacoesPaciente" placeholder="Ex: Jejum de 8 horas"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="observacoes">Observações (internas do médico)</label>
+                <textarea id="observacoes" name="observacoes" placeholder="Anote detalhes importantes para a consulta"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="notificarPaciente" name="notificarPaciente" value="true" checked>
+                    Notificar paciente sobre esta consulta
+                </label>
+            </div>
+
+            <div class="form-group" id="lembreteHorasGroup">
+                <label for="lembreteHoras">Lembrar paciente (horas antes)</label>
+                <input type="number" id="lembreteHoras" name="lembreteHoras" min="0" value="24">
+            </div>
+
+            <button type="submit" class="btn-primario btn-agendar">Agendar Consulta</button>
+            <button type="submit" class="btn-primario btn-atualizar" style="display:none;">Atualizar Consulta</button>
+            <button type="button" class="btn-secundario btn-cancelar">Cancelar</button>
+        </form>
+    </div>
+</div>
+</div> 

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${medicamento.id} != null ? 'Editar Medicamento' : 'Novo Medicamento'"></title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<!-- Menu lateral -->
+<div class="sidebar">
+    <h2>MedDoc</h2> <div class="profile-link">
+    <a href="/idoso/perfil"><i class="far fa-user-circle"></i>  Perfil</a>
+</div>
+    <ul>
+        <li><a href="/idoso/dashboard"><i class="fas fa-home"></i> Início</a></li>
+        <li><a href="/idoso/calendario"><i class="fas fa-calendar-alt"></i> Calendário</a></li>
+        <li><a href="/idoso/chat"><i class="fas fa-comments"></i> Chat</a></li>
+        <li><a href="/idoso/medicamentos"><i class="fas fa-pills"></i> Medicamentos</a></li>
+        <li><a href="/idoso/consultas"><i class="fas fa-stethoscope"></i> Consultas</a></li>
+        <li><a href="/notificacoes"><i class="fas fa-bell"></i> Notificações</a></li>
+        <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+    </ul>
+
+</div>
+
+<div class="meddoc-medicamentos">
+    <h2><i class="fas fa-plus-circle"></i> Adicionar Novo Medicamento</h2>
+    
+    <!-- Mensagens de erro/sucesso -->
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        <i class="fas fa-exclamation-circle"></i> <span th:text="${errorMessage}"></span>
+    </div>
+    <div th:if="${successMessage}" class="alert alert-success" role="alert">
+        <i class="fas fa-check-circle"></i> <span th:text="${successMessage}"></span>
+    </div>
+
+    <form method="post" th:action="@{/idoso/medicamentos}" th:object="${medicamento}">
+
+        <div class="linha-form">
+            <div class="grupo-form">
+                <label>Nome do medicamento:</label>
+                <div class="input-icon-group">
+                    <i class="fas fa-pills icon"></i>
+                    <input type="text" th:field="*{nome}" required/>
+                    <div class="error-message" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
+                </div>
+            </div>
+            <div class="grupo-form">
+                <label>Dosagem:</label>
+                <div class="input-icon-group">
+                    <i class="fas fa-prescription-bottle-alt icon"></i>
+                    <input type="text" th:field="*{dosagem}" required/>
+                    <div class="error-message" th:if="${#fields.hasErrors('dosagem')}" th:errors="*{dosagem}"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="linha-form">
+            <div class="grupo-form">
+                <label>Frequência:</label>
+                <div class="input-icon-group">
+                    <i class="fas fa-redo-alt icon"></i>
+                    <input type="text" th:field="*{frequencia}" required/>
+                    <div class="error-message" th:if="${#fields.hasErrors('frequencia')}" th:errors="*{frequencia}"></div>
+                </div>
+            </div>
+            <div class="grupo-form">
+                <label>Horário:</label>
+                <div class="input-icon-group">
+                    <i class="fas fa-clock icon"></i>
+                    <input type="time" th:field="*{horario}" required/>
+                    <div class="error-message" th:if="${#fields.hasErrors('horario')}" th:errors="*{horario}"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="linha-form">
+            <div class="grupo-form">
+                <label>Estoque inicial:</label>
+                <div class="input-icon-group">
+                    <i class="fas fa-boxes icon"></i>
+                    <input type="number" th:field="*{estoqueInicial}" required/>
+                    <div class="error-message" th:if="${#fields.hasErrors('estoqueInicial')}" th:errors="*{estoqueInicial}"></div>
+                </div>
+            </div>
+            <div class="grupo-form">
+                <label>Comprimidos por dose:</label>
+                <div class="input-icon-group">
+                    <i class="fas fa-capsules icon"></i>
+                    <input type="number" th:field="*{comprimidosPorDose}" required/>
+                    <div class="error-message" th:if="${#fields.hasErrors('comprimidosPorDose')}" th:errors="*{comprimidosPorDose}"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="linha-form">
+            <div class="grupo-form">
+                <label>Data de início:</label>
+                <div class="input-icon-group">
+                    <i class="fas fa-calendar-alt icon"></i>
+                    <input type="date" th:field="*{dataInicio}" required/>
+                    <div class="error-message" th:if="${#fields.hasErrors('dataInicio')}" th:errors="*{dataInicio}"></div>
+                </div>
+            </div>
+            <div class="grupo-form">
+                <label>Data de término:</label>
+                <div class="input-icon-group">
+                    <i class="fas fa-calendar-alt icon"></i>
+                    <input type="date" th:field="*{dataFim}"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="linha-form">
+            <div class="grupo-form">
+                <label>Forma farmacêutica:</label>
+                <div class="input-icon-group">
+                    <i class="fas fa-capsules icon"></i>
+                    <select th:field="*{formaFarmaceutica}" required>
+                        <option value="">Selecione</option>
+                        <option value="comprimido">Comprimido</option>
+                        <option value="xarope">Xarope</option>
+                        <option value="capsula">Cápsula</option>
+                        <option value="injetavel">Injetável</option>
+                        <option value="topico">Tópico</option>
+                        <option value="outra">Outra</option>
+                    </select>
+                    <div class="error-message" th:if="${#fields.hasErrors('formaFarmaceutica')}" th:errors="*{formaFarmaceutica}"></div>
+                </div>
+            </div>
+            <div class="grupo-form">
+                <label>Tipo:</label>
+                <div class="input-icon-group">
+                    <i class="fas fa-tags icon"></i>
+                    <select th:field="*{tipo}" required>
+                        <option value="">Selecione</option>
+                        <option value="capsula">Cápsula</option>
+                        <option value="comprimido">Comprimido</option>
+                        <option value="liquido">Líquido</option>
+                        <option value="outros">Outros</option>
+                    </select>
+                    <div class="error-message" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="linha-form">
+            <div class="grupo-form">
+                <label>Categoria:</label>
+                <div class="input-icon-group">
+                    <i class="fas fa-tags icon"></i>
+                    <input type="text" th:field="*{categoria}" required/>
+                    <div class="error-message" th:if="${#fields.hasErrors('categoria')}" th:errors="*{categoria}"></div>
+                </div>
+            </div>
+            <div class="grupo-form">
+                <label>Prescritor:</label>
+                <div class="input-icon-group">
+                    <i class="fas fa-user-md icon"></i>
+                    <input type="text" th:field="*{prescritor}"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-save"><i class="fas fa-save"></i> Salvar</button>
+            <a th:href="@{/idoso/medicamentos}" class="btn-back"><i class="fas fa-arrow-alt-circle-left"></i> Voltar</a>
+        </div>
+    </form>
+</div>
+
+<style>
+.error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+</style>
+
+</body>
+</html>

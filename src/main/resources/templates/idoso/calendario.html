@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendário Médico - MedDoc</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<!-- Menu lateral -->
+<div class="sidebar">
+    <h2>MedDoc</h2> <div class="profile-link">
+    <a href="/idoso/perfil"><i class="far fa-user-circle"></i>  Perfil</a>
+</div>
+    <ul>
+        <li><a href="/idoso/dashboard"><i class="fas fa-home"></i> Início</a></li>
+        <li><a href="/idoso/calendario"><i class="fas fa-calendar-alt"></i> Calendário</a></li>
+        <li><a href="/idoso/chat"><i class="fas fa-comments"></i> Chat</a></li>
+        <li><a href="/idoso/medicamentos"><i class="fas fa-pills"></i> Medicamentos</a></li>
+        <li><a href="/idoso/consultas"><i class="fas fa-stethoscope"></i> Consultas</a></li>
+        <li><a href="/notificacoes"><i class="fas fa-bell"></i> Notificações</a></li>
+        <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+    </ul>
+
+</div>
+
+<div class="main-content">
+    <div class="calendar-page-header">
+        <div class="header-title-description">
+            <i class="fas fa-calendar-alt header-icon"></i>
+            <h1>Calendário Médico</h1>
+            <p>Gerencie medicamentos, consultas e exames</p>
+        </div>
+    </div>
+
+    <div class="calendar-container">
+        <div class="calendar-main-panel">
+            <div class="calendar-controls">
+                <div class="month-navigation">
+                    <button id="prevMonthBtn" class="nav-arrow"><i class="fas fa-chevron-left"></i></button>
+                    <span id="currentMonthYearSpan" class="current-month" th:text="${currentMonthYear}" th:data-month="${monthValue}" th:data-year="${year}">Junho 2025</span>
+                    <button id="nextMonthBtn" class="nav-arrow"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="filter-dropdown-group">
+                    <button class="filter-icon-btn"><i class="fas fa-filter"></i></button>
+                    <select class="filter-calendar-dropdown">
+                        <option value="">Todos</option>
+                        <option value="medicamentos">Medicamentos</option>
+                        <option value="consultas">Consultas</option>
+                        <option value="exames">Exames</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="calendar-grid">
+                <div class="day-header">Dom</div>
+                <div class="day-header">Seg</div>
+                <div class="day-header">Ter</div>
+                <div class="day-header">Qua</div>
+                <div class="day-header">Qui</div>
+                <div class="day-header">Sex</div>
+                <div class="day-header">Sáb</div>
+
+                <!-- Células vazias para alinhar o primeiro dia da semana -->
+                <div th:each="i : ${#numbers.sequence(1, firstDayOfWeek)}" class="day-cell empty"></div>
+
+                <!-- Dias do mês -->
+                <div th:each="dayOfMonth : ${#numbers.sequence(1, numberOfDaysInMonth)}"
+                     th:classappend="${dayOfMonth == today.dayOfMonth and monthValue == today.monthValue and year == today.year} ? 'current-day' : ''"
+                     class="day-cell">
+                    <span th:text="${dayOfMonth}"></span>
+                    <div th:each="med : ${medicamentos}"
+                         th:if="${med.dataInicio != null and med.dataInicio.dayOfMonth == dayOfMonth and med.dataInicio.monthValue == monthValue and med.dataInicio.year == year}">
+                        <div class="medication-event">
+                            <i class="fas fa-pills event-icon"></i>
+                            <span th:text="${med.nome + ' (' + med.dosagem + ')'}"></span>
+                            <span class="event-time" th:text="${med.horario}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="calendar-side-panel">
+            <div class="events-today-card">
+                <h3>Eventos de Hoje</h3>
+                <p>Nenhum evento para hoje</p>
+            </div>
+            <div class="legend-card">
+                <h3>Legenda</h3>
+                <ul>
+                    <li><i class="fas fa-pills"></i> Medicamentos</li>
+                    <li><i class="fas fa-stethoscope"></i> Consultas</li>
+                    <li><i class="fas fa-file-alt"></i> Exames</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const prevMonthBtn = document.getElementById('prevMonthBtn');
+        const nextMonthBtn = document.getElementById('nextMonthBtn');
+        const currentMonthYearSpan = document.getElementById('currentMonthYearSpan');
+
+        let currentMonth = parseInt(currentMonthYearSpan.dataset.month);
+        let currentYear = parseInt(currentMonthYearSpan.dataset.year);
+
+        function navigateMonth(offset) {
+            let newMonth = currentMonth + offset;
+            let newYear = currentYear;
+
+            if (newMonth < 1) {
+                newMonth = 12;
+                newYear--;
+            } else if (newMonth > 12) {
+                newMonth = 1;
+                newYear++;
+            }
+
+            window.location.href = `/calendario?month=${newMonth}&year=${newYear}`;
+        }
+
+        prevMonthBtn.addEventListener('click', () => navigateMonth(-1));
+        nextMonthBtn.addEventListener('click', () => navigateMonth(1));
+    });
+</script>
+
+</body>
+</html> 

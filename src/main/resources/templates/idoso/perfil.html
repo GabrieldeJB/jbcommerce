@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Meu Perfil</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<!-- Menu lateral -->
+<div class="sidebar">
+    <h2>MedDoc</h2> <div class="profile-link">
+    <a href="/idoso/perfil"><i class="far fa-user-circle"></i>  Perfil</a>
+</div>
+    <ul>
+        <li><a href="/idoso/dashboard"><i class="fas fa-home"></i> Início</a></li>
+        <li><a href="/idoso/calendario"><i class="fas fa-calendar-alt"></i> Calendário</a></li>
+        <li><a href="/idoso/chat"><i class="fas fa-comments"></i> Chat</a></li>
+        <li><a href="/idoso/medicamentos"><i class="fas fa-pills"></i> Medicamentos</a></li>
+        <li><a href="/idoso/consultas"><i class="fas fa-stethoscope"></i> Consultas</a></li>
+        <li><a href="/notificacoes"><i class="fas fa-bell"></i> Notificações</a></li>
+        <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+    </ul>
+
+</div>
+        <!-- Conteúdo principal -->
+        <main class="perfil-conteudo">
+            <div class="perfil-header">
+                <h1 class="perfil-titulo"><i class="fa-regular fa-user"></i> Meu Perfil</h1>
+                <button class="perfil-btn-editar"><i class="fa-solid fa-pen"></i> Editar Perfil</button>
+            </div>
+            <!-- Informações Pessoais -->
+            <section class="perfil-card perfil-card-azul">
+                <h2 class="perfil-card-titulo">Informações Pessoais</h2>
+                <div class="perfil-info-linha">
+                    <div>
+                        <span class="perfil-info-label">Nome Completo</span>
+                        <span class="perfil-info-valor" th:text="${usuario.nome}"></span>
+                    </div>
+                    <div>
+                        <span class="perfil-info-label">Idade</span>
+                        <span class="perfil-info-valor" th:text="${idade}"></span>
+                    </div>
+                </div>
+                <div class="perfil-info-linha">
+                    <div>
+                        <span class="perfil-info-label">Email</span>
+                        <span class="perfil-info-valor" th:text="${usuario.email}"></span>
+                    </div>
+                    <div>
+                        <span class="perfil-info-label">Telefone</span>
+                        <span class="perfil-info-valor" th:text="${usuario.celular}"></span>
+                    </div>
+                </div>
+            </section>
+            <!-- Endereço -->
+            <section class="perfil-card perfil-card-verde">
+                <h2 class="perfil-card-titulo">Endereço</h2>
+                <div class="perfil-info-linha">
+                    <div>
+                        <span class="perfil-info-label">Rua</span>
+                        <span class="perfil-info-valor" th:text="${usuario.endereco}"></span>
+                    </div>
+                    <div>
+                        <span class="perfil-info-label">Número</span>
+                        <span class="perfil-info-valor" th:text="${usuario.numero}"></span>
+                    </div>
+                </div>
+                <div class="perfil-info-linha">
+                    <div>
+                        <span class="perfil-info-label">Bairro</span>
+                        <span class="perfil-info-valor" th:text="${usuario.bairro}"></span>
+                    </div>
+                    <div>
+                        <span class="perfil-info-label">Cidade</span>
+                        <span class="perfil-info-valor" th:text="${usuario.cidade}"></span>
+                    </div>
+                </div>
+            </section>
+            <!-- Contato de Emergência -->
+            <section class="perfil-card perfil-card-vermelho">
+                <h2 class="perfil-card-titulo"><i class="fa-solid fa-triangle-exclamation"></i> Contato de Emergência</h2>
+                <div class="perfil-info-linha">
+                    <div>
+                        <span class="perfil-info-label">Nome</span>
+                        <span class="perfil-info-valor" th:text="${usuario.nomeparentescoEmergencia}"></span>
+                    </div>
+                    <div>
+                        <span class="perfil-info-label">Telefone</span>
+                        <span class="perfil-info-valor" th:text="${usuario.telefoneEmergencia}">(</span>
+                    </div>
+                    <div>
+                        <span class="perfil-info-label">Parentesco</span>
+                        <span class="perfil-info-valor" th:text="${usuario.parentescoEmergencia}"></span>
+                    </div>
+                </div>
+            </section>
+            <!-- Informações Médicas -->
+            <section class="perfil-card perfil-card-roxo">
+                <h2 class="perfil-card-titulo"><i class="fa-solid fa-heart-pulse"></i> Informações Médicas</h2>
+                <div class="perfil-info-linha">
+                    <div>
+                        <span class="perfil-info-label">Tipo Sanguíneo</span>
+                        <span class="perfil-info-valor perfil-info-sangue" th:text="${usuario.tipoSanguineo}"></span>
+                    </div>
+                    <div>
+                        <span class="perfil-info-label">Alergias</span>
+                        <span class="perfil-info-valor" th:text="${usuario.alergias}"></span>
+                    </div>
+                </div>
+                <div class="perfil-info-linha">
+                    <div>
+                        <span class="perfil-info-label">Condições Crônicas</span>
+                        <span class="perfil-info-valor" th:text="${usuario.condicoesCronicas}"></span>
+                    </div>
+                    <div>
+                        <span class="perfil-info-label">Medicamentos Regulares</span>
+                        <span class="perfil-info-valor" th:text="${usuario.medicamentosRegulares}"></span>
+                    </div>
+                </div>
+            </section>
+            <!-- Configurações -->
+            <section class="perfil-card perfil-card-azul">
+                <h2 class="perfil-card-titulo"><i class="fa-solid fa-gear"></i> Configurações</h2>
+                <div class="perfil-config-toggle">
+                    <label>
+                        <input type="checkbox" checked>
+                        Notificações
+                    </label>
+                    <label>
+                        <input type="checkbox" checked>
+                        Lembretes de Medicamentos
+                    </label>
+                    <label>
+                        <input type="checkbox">
+                        Compartilhar Dados Médicos
+                    </label>
+                </div>
+            </section>
+            <!-- Segurança -->
+            <section class="perfil-card perfil-card-ouro">
+                <h2 class="perfil-card-titulo"><i class="fa-solid fa-lock"></i> Segurança</h2>
+                <form class="perfil-form-senha">
+                    <input type="password" placeholder="Digite sua nova senha">
+                    <input type="password" placeholder="Confirme sua nova senha">
+                    <button type="submit" class="perfil-btn-alterar-senha">Alterar Senha</button>
+                </form>
+            </section>
+            <!-- Zona de Perigo -->
+            <section class="perfil-card perfil-card-perigo">
+                <h2 class="perfil-card-titulo"><i class="fa-solid fa-triangle-exclamation"></i> Zona de Perigo</h2>
+                <div class="perfil-perigo-box">
+                    <p><b>Excluir Conta</b></p>
+                    <p>Esta ação é irreversível. Todos os seus dados, incluindo medicamentos, consultas e histórico médico serão permanentemente excluídos.</p>
+                    <button class="perfil-btn-excluir"><i class="fa-solid fa-trash"></i> Excluir Minha Conta</button>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html> 

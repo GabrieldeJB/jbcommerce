@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Meus Medicamentos - MedDoc</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+<!-- Menu lateral -->
+<div class="sidebar">
+    <h2>MedDoc</h2> <div class="profile-link">
+    <a href="/idoso/perfil"><i class="far fa-user-circle"></i>  Perfil</a>
+</div>
+    <ul>
+        <li><a href="/idoso/dashboard"><i class="fas fa-home"></i> Início</a></li>
+        <li><a href="/idoso/calendario"><i class="fas fa-calendar-alt"></i> Calendário</a></li>
+        <li><a href="/idoso/chat"><i class="fas fa-comments"></i> Chat</a></li>
+        <li><a href="/idoso/medicamentos"><i class="fas fa-pills"></i> Medicamentos</a></li>
+        <li><a href="/idoso/consultas"><i class="fas fa-stethoscope"></i> Consultas</a></li>
+        <li><a href="/notificacoes"><i class="fas fa-bell"></i> Notificações</a></li>
+        <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+    </ul>
+
+</div>
+<div class="main-content">
+    <div class="medications-page-header">
+        <div>
+            <h1>Meus Medicamentos</h1>
+            <p>Gerencie sua lista de medicamentos e estoque</p>
+        </div>
+        <a th:href="@{/idoso/medicamentos/novo}" class="add-medication-btn">
+            <i class="fas fa-plus"></i> Adicionar Medicamento
+        </a>
+    </div>
+
+    <div class="search-filter-section">
+        <div class="search-input-group">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Buscar medicamentos...">
+        </div>
+        <select class="filter-dropdown" id="typeFilterDropdown">
+            <option value="">Todos os tipos</option>
+            <option value="capsula">Cápsula</option>
+            <option value="comprimido">Comprimido</option>
+            <option value="liquido">Líquido</option>
+            <option value="outros">Outros</option>
+        </select>
+        <button class="filter-btn" id="filterButton"><i class="fas fa-filter"></i> Filtrar</button>
+    </div>
+
+    <div id="medicationListContainer">
+        <div th:if="${#lists.isEmpty(medicamentos)}" class="no-medications-found">
+            <div class="icon-placeholder">
+                <i class="fas fa-prescription-bottle-alt"></i>
+            </div>
+            <h2>Nenhum medicamento encontrado</h2>
+            <p>Você ainda não adicionou nenhum medicamento</p>
+            <a th:href="@{/idoso/medicamentos/novo}" class="add-first-medication-btn">
+                <i class="fas fa-plus"></i> Adicionar seu Primeiro Medicamento
+            </a>
+        </div>
+
+        <div th:unless="${#lists.isEmpty(medicamentos)}" class="medication-cards-grid">
+            <div class="medication-card" th:each="med : ${medicamentos}">
+                <div class="medication-header">
+                    <div class="medication-icon-name">
+                        <i class="far fa-circle medication-radio-icon"></i> <!-- Placeholder para o ícone de rádio -->
+                        <h3><span th:text="${med.nome}"></span> <span class="dosage-text" th:text="${med.dosagem}"></span></h3>
+                    </div>
+                    <span class="medication-type-tag" th:text="${med.tipo}">cápsula</span>
+                </div>
+
+                <div class="medication-details">
+                    <div class="detail-row">
+                        <i class="fas fa-redo-alt"></i>
+                        <span>Frequência</span>
+                        <span class="detail-value" th:text="${med.frequencia}"></span>
+                    </div>
+                    <div class="detail-row" th:classappend="${med.estoqueInicial <= 5} ? 'low-stock' : ''">
+                        <i class="fas fa-box-open"></i>
+                        <span>Estoque</span>
+                        <span class="detail-value" th:text="${med.estoqueInicial} + ' unidades'"></span>
+                        <i th:if="${med.estoqueInicial <= 5}" class="fas fa-exclamation-circle low-stock-icon"></i>
+                    </div>
+                    <div class="detail-row">
+                        <i class="fas fa-clock"></i>
+                        <span>Próxima dose</span>
+                        <span class="detail-value" th:text="${med.proximaDose}"></span>
+                    </div>
+                </div>
+
+                <div th:if="${med.estoqueInicial <= 5}" class="stock-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Estoque baixo</span>
+                    <p>Considere reabastecer em breve</p>
+                </div>
+
+                <div class="medication-actions">
+                    <a th:href="@{'/idoso/medicamentos/editar/' + ${med.id}}" class="btn-action edit"><i class="fas fa-edit"></i> Editar</a>
+                    <a href="#" class="btn-action view" th:data-med-id="${med.id}"><i class="fas fa-eye"></i> Visualizar</a>
+                    <a th:href="@{'/idoso/medicamentos/remover/' + ${med.id}}" class="btn-action delete"><i class="fas fa-trash-alt"></i> Excluir</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="medicamentoDetailModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>Detalhes do Medicamento</h2>
+        <div id="modalBodyContent">
+            <!-- Detalhes serão carregados aqui -->
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function attachViewButtonListeners() {
+            document.querySelectorAll('.btn-action.view').forEach(button => {
+                button.removeEventListener('click', handleViewButtonClick); // Prevenir múltiplos listeners
+                button.addEventListener('click', handleViewButtonClick);
+            });
+        }
+
+        function handleViewButtonClick() {
+            const medId = this.getAttribute('data-med-id');
+            fetch('/idoso/medicamentos/' + medId)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('modalBodyContent').innerHTML = `
+                        <p><strong>Nome:</strong> ${data.nome}</p>
+                        <p><strong>Dosagem:</strong> ${data.dosagem}</p>
+                        <p><strong>Horário:</strong> ${data.horario}</p>
+                        <p><strong>Frequência:</strong> ${data.frequencia}</p>
+                        <p><strong>Estoque Inicial:</strong> ${data.estoqueInicial}</p>
+                        <p><strong>Comprimidos por Dose:</strong> ${data.comprimidosPorDose}</p>
+                        <p><strong>Data de Início:</strong> ${data.dataInicio}</p>
+                        <p><strong>Data de Fim:</strong> ${data.dataFim}</p>
+                        <p><strong>Tipo:</strong> ${data.tipo}</p>
+                        <p><strong>Próxima Dose:</strong> ${data.proximaDose}</p>
+                        <p><strong>Forma Farmacêutica:</strong> ${data.formaFarmaceutica}</p>
+                        <p><strong>Categoria:</strong> ${data.categoria}</p>
+                        <p><strong>Prescritor:</strong> ${data.prescritor}</p>
+                    `;
+                    document.getElementById('medicamentoDetailModal').style.display = 'block';
+                });
+        }
+
+        attachViewButtonListeners(); // Anexar na carga inicial
+
+        document.querySelector('.close-button').onclick = function() {
+            document.getElementById('medicamentoDetailModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('medicamentoDetailModal')) {
+                document.getElementById('medicamentoDetailModal').style.display = 'none';
+            }
+        }
+
+        const searchInput = document.getElementById('searchInput');
+        const typeFilterDropdown = document.getElementById('typeFilterDropdown');
+        const filterButton = document.getElementById('filterButton');
+        const medicationListContainer = document.getElementById('medicationListContainer');
+
+        function performSearch() {
+            const termoBusca = searchInput.value;
+            const tipoFiltro = typeFilterDropdown.value;
+
+            fetch(`/idoso/medicamentos/search?termoBusca=${termoBusca}&tipoFiltro=${tipoFiltro}`)
+                .then(response => response.text())
+                .then(html => {
+                    medicationListContainer.innerHTML = html;
+                    attachViewButtonListeners(); // Re-anexar após a atualização do conteúdo
+                });
+        }
+
+        searchInput.addEventListener('input', performSearch);
+        typeFilterDropdown.addEventListener('change', performSearch);
+        filterButton.addEventListener('click', performSearch);
+    });
+</script>
+
+</body>
+</html>
