@@ -5,7 +5,7 @@
 ## 📷 Demonstrações
 
 ### Tela de Login
-![Login](./screenshots/login.png)
+![Login]([[(https://github.com/GabrieldeJB/screenshots/blob/main/Login.png)](https://github.com/GabrieldeJB/screenshots/blob/main/Pagamento.png)](https://github.com/GabrieldeJB/screenshots/blob/main/Login.png?raw=true))
 
 ### Carrinho de Compras
 ![Carrinho](./screenshots/carrinho.png)
