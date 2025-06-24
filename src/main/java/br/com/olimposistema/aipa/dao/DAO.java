@@ -11,7 +11,6 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
 import br.com.olimposistema.aipa.dao.filter.FilterDAO;
 import br.com.olimposistema.aipa.filtrable.IFiltrable;
 import br.com.olimposistema.aipa.filtrable.order.EOrdening;
@@ -92,7 +91,7 @@ public class DAO<T extends Model> {
 		return buscaPorId(id);
 	}
 
-	private T buscaPorId(int id) {
+	public T buscaPorId(int id) {
 		T model;
 		model = em.find(this.persistedClass, id);
 		
@@ -186,4 +185,6 @@ public class DAO<T extends Model> {
 		}
 		return null;
 	}
+
+	
 }

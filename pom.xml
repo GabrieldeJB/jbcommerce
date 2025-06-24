@@ -11,13 +11,28 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+
 	<dependencies>
 	
+			<dependency>
+		  <groupId>com.mercadopago</groupId>
+		  <artifactId>sdk-java</artifactId>
+		  <version>2.1.11</version>
+			</dependency>
+
+		
+		<dependency>
+		  <groupId>org.json</groupId>
+		  <artifactId>json</artifactId>
+		  <version>20230227</version>
+		</dependency>
+
+
 		<!-- Dependencia do Framework do VRaptor -->
 		<dependency>
 			<groupId>br.com.caelum</groupId>
-			<artifactId>vraptor</artifactId>
-			<version>4.1.4</version>
+    		<artifactId>vraptor</artifactId>
+    		<version>4.2.0.Final</version>
 		</dependency>
 		
 		<!-- Dependencia Responsavel Por fornecer um
@@ -200,11 +215,18 @@
 			  <artifactId>jaxb-impl</artifactId>
 			  <version>2.2.11</version>
 		</dependency>
+		
+		<dependency>
+			  <groupId>org.mindrot</groupId>
+			  <artifactId>jbcrypt</artifactId>
+		      <version>0.4</version>
+		</dependency>
+		
 		<!-- #### fim das dependencias java9 ou superior ### -->
 	</dependencies>
 
 	<build>
-		<finalName>dankicommerce</finalName>
+		<finalName>jbcommerce</finalName>
 		<outputDirectory>${basedir}/src/main/webapp/WEB-INF/classes</outputDirectory>
 		<plugins>
 			<plugin>
@@ -228,9 +250,9 @@
 			</plugin>
 			
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.4</version>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-war-plugin</artifactId>
+			    <version>3.3.2</version>
 			</plugin>
 			
 			<plugin>
@@ -262,6 +284,7 @@
 				</configuration>
 			</plugin>
 
+
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.3</version>
@@ -282,7 +305,7 @@
 		</plugins>
 	</build>
 
-	<artifactId>dankicommerce</artifactId>
+	<artifactId>jbcommerce</artifactId>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
