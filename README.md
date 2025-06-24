@@ -5,13 +5,13 @@
 ## 📷 Demonstrações
 
 ### Tela de Login
-![Login]([[(https://github.com/GabrieldeJB/screenshots/blob/main/Login.png)](https://github.com/GabrieldeJB/screenshots/blob/main/Pagamento.png)](https://github.com/GabrieldeJB/screenshots/blob/main/Login.png?raw=true))
+![Login](https://github.com/GabrieldeJB/jbcommerce/blob/main/src/main/webapp/assets/img/screenshots/Login.png?raw=true)
 
 ### Carrinho de Compras
-![Carrinho](./screenshots/carrinho.png)
+![Carrinho](https://github.com/GabrieldeJB/jbcommerce/blob/main/src/main/webapp/assets/img/screenshots/Carrinho.png?raw=true)
 
-### Finalização de Pagamento (Mercado Pago)
-![Pagamento](./screenshots/pagamento.png)
+### Pagamento
+![Pagamento](https://github.com/GabrieldeJB/jbcommerce/blob/main/src/main/webapp/assets/img/screenshots/Pagamento.png?raw=true)
 
 ## 🚀 Funcionalidades
 
